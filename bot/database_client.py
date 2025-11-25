@@ -18,8 +18,19 @@ def recreate_database() -> None:
             )
             """
         )
-    connection.close()
-
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXIST users
+            (
+                id INTEGER PRIMARY KEY,
+                telegram_id INTEGER NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                state TEXT DEFAULT NULL,
+                order_json TEXT DEFAULT NULL
+            )
+            """,
+            )
+    
 def persist_updates(updates: list) -> None:
     if not updates:
         return
@@ -36,3 +47,15 @@ def persist_updates(updates: list) -> None:
             data,
         )
     connection.close()
+
+    def ensure_user_exists(telegram_id: int)->None:
+        """Ensure a user with the given telegram_id exists in the users table.
+        If the user doesn't exist, create them. All operations happen in a single transactive"""
+        with connection:
+            cursor = connection.execute(
+                "SELECT 1 FROM users WHERE telegram_id = ?",(telegram_id,)
+            )
+        if cursor.fetchone() is None:
+            connection.execute(
+                "INSERT INTO users(telegram_id) VALUES(?)", (telegram_id,)
+            )

@@ -9,7 +9,6 @@ def makeRequest(method: str, **params) -> dict:
     token = os.getenv('TOKEN')
     base_uri = os.getenv('TELEGRAM_BASE_URI')
     
-    # Проверяем что переменные загружены
     if not token or not base_uri:
         print("Error: TOKEN or TELEGRAM_BASE_URI not found in .env file")
         return {}
@@ -44,6 +43,9 @@ def getUpdates(**params) -> list:
 
 def sendMessage(chat_id: int, text: str,**params) -> dict:
     return makeRequest('sendMessage', chat_id=chat_id, text=text, **params)
+
+def sendPhoto(chat_id: int, photo: str, **params) -> dict:
+    return makeRequest('sendPhoto', chat_id=chat_id, photo=photo, **params)
 
 def getMe() -> dict:
     return makeRequest('getMe')
