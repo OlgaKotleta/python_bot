@@ -38,12 +38,12 @@ def makeRequest(method: str, **params) -> dict:
         print(f"Error: {e}")
         return {}
 
-def getUpdates(offset: int) -> list:
-    result = makeRequest('getUpdates', offset=offset, timeout=30)
+def getUpdates(**params) -> list:
+    result = makeRequest('getUpdates', **params, timeout=30)
     return result if result else []
 
-def sendMessage(chat_id: int, text: str) -> dict:
-    return makeRequest('sendMessage', chat_id=chat_id, text=text)
+def sendMessage(chat_id: int, text: str,**params) -> dict:
+    return makeRequest('sendMessage', chat_id=chat_id, text=text, **params)
 
 def getMe() -> dict:
     return makeRequest('getMe')
