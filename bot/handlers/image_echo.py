@@ -2,7 +2,7 @@ from bot.handlers.handler import Handler
 import bot.telegram_client
 
 class ImageEcho(Handler):
-    def can_handler(self, update: dict) -> bool:
+    def can_handle(self, update: dict) -> bool:
         return "message" in update and "photo" in update["message"]
     
     def handle(self, update: dict) -> bool:
