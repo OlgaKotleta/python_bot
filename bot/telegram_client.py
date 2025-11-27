@@ -38,14 +38,20 @@ def makeRequest(method: str, **params) -> dict:
         return {}
 
 def getUpdates(**params) -> list:
-    result = makeRequest('getUpdates', **params, timeout=30)
+    result = makeRequest('getUpdates', **params)
     return result if result else []
 
-def sendMessage(chat_id: int, text: str,**params) -> dict:
+def sendMessage(chat_id: int, text: str, **params) -> dict:
     return makeRequest('sendMessage', chat_id=chat_id, text=text, **params)
 
 def sendPhoto(chat_id: int, photo: str, **params) -> dict:
     return makeRequest('sendPhoto', chat_id=chat_id, photo=photo, **params)
+
+def deleteMessage(chat_id: int, message_id: int) -> dict:
+    return makeRequest("deleteMessage", chat_id=chat_id, message_id=message_id)
+
+def answerCallbackQuery(callback_query_id: str, **kwargs) -> dict:
+    return makeRequest("answerCallbackQuery", callback_query_id=callback_query_id, **kwargs)
 
 def getMe() -> dict:
     return makeRequest('getMe')

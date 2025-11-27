@@ -14,18 +14,18 @@ class MessageStart(Handler):
     def handle(self, update: dict, state: str, order_json: dict):
         telegram_id = update["message"]["from"]["id"]
 
-        bot.database_client.clear_user_state_and_order(telegram_id)
+        bot.database_client.clear_current_order(telegram_id)
         bot.database_client.update_user_state(telegram_id, "WAIT_FOR_PIZZA_NAME")
 
         bot.telegram_client.sendMessage(
-            chat_id =update["message"]["chat"]["id"],
+            chat_id=update["message"]["chat"]["id"],
             text="Welcome to Pizza shop!",
             reply_markup=json.dumps({"remove_keyboard": True}),
         )
 
         bot.telegram_client.sendMessage(
             chat_id=update["message"]["chat"]["id"],
-            text = "Please choise pizza type",
+            text="Please choose pizza type",
             reply_markup=json.dumps(
                 {
                     "inline_keyboard": [
@@ -35,20 +35,20 @@ class MessageStart(Handler):
                         ],
                         [
                             {
-                                "text":"Quattro Stagioni",
-                                "callback_data":"pizza_quattro_stagioni",
+                                "text": "Quattro Stagioni",
+                                "callback_data": "pizza_quattro_stagioni",
                             },
                             {
-                                "text":"Capricciosa",
-                                "callback_data":"pizza_capricciosa"
+                                "text": "Capricciosa",
+                                "callback_data": "pizza_capricciosa"
                             },
                         ],
                         [
-                            {"text":"Diavola", "callback_data":"pizza_diavola"},
-                            {"text":"Prosciutto","callback_data":"pizza_prosciutto"},
+                            {"text": "Diavola", "callback_data": "pizza_diavola"},
+                            {"text": "Prosciutto", "callback_data": "pizza_prosciutto"},
                         ],
                     ],
-                },
+                }
             ),
         )
         return HandlerStatus.STOP
